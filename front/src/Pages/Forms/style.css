@@ -1,0 +1,9 @@
+.container {
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 30px 0;
+  margin: 50px 0;
+}
+.container .title {
+  text-align: center;
+}
