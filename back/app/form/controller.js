@@ -1,7 +1,7 @@
-const form_model = require('./model');
+const form_model = require('../model');
 
 // Create and Save new form data
-exports.addSomeForm = (req, res) => {
+exports.addOneForm = (req, res) => {
     const form_data = new form_model(req.body);
     try {
         form_data.save()
@@ -32,10 +32,10 @@ exports.addSomeForm = (req, res) => {
 //     }
 // };
 
-// Find particular form data with an stir
-exports.findOneForm = (req, res) => {
+// Find particular form data with a stir
+exports.getOneForm = (req, res) => {
     try {
-        form_model.findOne({ stir: req.params.stir }).then(result => {
+        form_model.find({ stir: req.params.id }).then(result => {
             if (result.length != 0) {
                 res.status(200).send(result);
             } else {
@@ -50,7 +50,7 @@ exports.findOneForm = (req, res) => {
 // Update particular form data by the stir in the request
 exports.updateOneForm = (req, res) => {
     try {
-        form_model.findOneAndUpdate({ stir: req.params.stir }, req.body, { new: true }).then(result => {
+        form_model.findOneAndUpdate({ stir: req.params.id }, req.body, { new: true }).then(result => {
             if (result.length != 0) {
                 res.status(200).send(result);
             } else {
@@ -65,7 +65,7 @@ exports.updateOneForm = (req, res) => {
 // Delete form data with the specified stir in the request
 exports.deleteOneForm = (req, res) => {
     try {
-        form_model.findOneAndDelete({ stir: req.params.stir }).then(result => {
+        form_model.findOneAndDelete({ stir: req.params.id }).then(result => {
             if (result.length != 0) {
                 res.status(200).send(result);
             } else {

@@ -6,12 +6,16 @@ const Schema = mongoose.Schema;
 
 // Creating data schema
 const formDataSchema = new Schema({
+	"insert_data": {
+		type: Array,
+		required: false
+	},
 	"rasmiy_nomi": {
 		type: String,
 		required: true
 	},
 	"tashkil_yili": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"qaror": {
@@ -27,7 +31,7 @@ const formDataSchema = new Schema({
 		required: true
 	},
 	"ustav": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"tasischi": {
@@ -35,7 +39,7 @@ const formDataSchema = new Schema({
 		required: true
 	},
 	"tashkilot_soni": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"tashkilot_raxbari_ismi": {
@@ -43,7 +47,7 @@ const formDataSchema = new Schema({
 		required: true
 	},
 	"tashkilot_raxbari_nomeri": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"tashkilot_bosh_xisobchisi": {
@@ -51,7 +55,7 @@ const formDataSchema = new Schema({
 		required: true
 	},
 	"tashkilot_xisobchi_nomeri": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"yuridik_manzili": {
@@ -67,11 +71,11 @@ const formDataSchema = new Schema({
 		required: true
 	},
 	"asosiy_raqam": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"stir": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"bank_nomi": {
@@ -79,231 +83,231 @@ const formDataSchema = new Schema({
 		required: true
 	},
 	"xisob_raqam": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"tashqari_xisob_raqam": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"tijorat_xisob_raqam": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"umumiy_yer": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"paxta": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"galla": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"issiqxona": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"bog_maydoni": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"tokzor": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"poliz": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"sinov_maydoni": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"pudrat": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"xamkorlik_shartnomasi": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"asosiy_vosita": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"foydalanil_bino": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"foydalanilma_bino": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"yengil_avto": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"yuk_avto": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"boshqa_avto": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"yurar_avto": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"tirkamali_avto": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"invinlab": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"boshqalab": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"mebel": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"smeta": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"birinchi": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"ikkinchi": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"uchinchi": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"xodimlar_soni": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"boshqaruv_xodim": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"tarkibiy_xodimlar": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"texnik_xodim": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"shartnoma_xodim": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"vakant": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"vakant_boshqaruv": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"vakant_ilmiy": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"vakant_texnik": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"ilmiy_loyihalar": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"buyurtma_loyihalar": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"grant_loyihalar": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"boshqa_loyihalar": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"ortacha_oylik": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"boshqaruv_oylik": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"tarkibi_oylik": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"texnik_oylik": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"fuqarolik_oylik": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"reja": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"ijara_yer": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"bino_yer": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"sotish_maxsulot": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"kochat_sotish": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"xizmar_korsatish": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"boshqa_yonalish": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"tushgan_mablag": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"birinchi_mablag": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"ikkinchi_mablag": {
-		type: String,
+		type: Number,
 		required: true
 	},
 	"uchinchi_mablag": {
-		type: String,
+		type: Number,
 		required: true
 	},
 }, { timestamps: true });
@@ -311,5 +315,4 @@ const formDataSchema = new Schema({
 const FormData = mongoose.model('Data', formDataSchema);
 
 // export default FormData schema;
-
 module.exports = FormData;
