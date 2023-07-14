@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 // Creating data schema
-const formDataSchema = new Schema({
+const tokenSchema = new Schema({
 	"stir": {
 		type: Number,
 		required: true
@@ -28,7 +28,7 @@ const formDataSchema = new Schema({
 	}
 }, { timestamps: true });
 
-const FormData = mongoose.model('Data', formDataSchema);
+const TokenSchema = mongoose.model('Token', tokenSchema);
 
-// export default FormData schema;
-module.exports = FormData;
+// export default TokenSchema;
+module.exports = TokenSchema;

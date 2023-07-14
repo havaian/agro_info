@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 
 const router = express.Router();
 
-const controllers = require('./form/controller');
+const controllers = require('./controller');
 
 // parse requests of content-type - application/json
 router.use(bodyParser.json());
@@ -16,29 +16,17 @@ router.get("/", (req, res) => {
     agro_info: `It's working! 🙌`
   });
 });
-
-// router.get("/form/get/all", (req, res) => {
-//   controllers.getAllForms(req, res);
-// });
  
-router.get("/form/:id", (req, res) => {
-  controllers.getOneForm(req, res);
+router.get("/token/get/:id", (req, res) => {
+  controllers.getToken(req, res);
 });
-
-router.post('/form', (req, res) => {
-  controllers.addOneForm(req, res);
+ 
+router.post("/token/save/:id", (req, res) => {
+  controllers.saveToken(req, res);
 });
-
-router.put("/form/:id", (req, res) => {
-  controllers.updateOneForm(req, res);
+ 
+router.get("/token/validate/:id", (req, res) => {
+  controllers.validateToken(req, res);
 });
-
-router.delete("/form/:id", (req, res) => {
-  controllers.deleteOneForm(req, res);
-});
-
-// router.post("/form/delete/all", (req, res) => {
-//   controllers.deleteOneForm(req, res);
-// });
 
 module.exports = router;

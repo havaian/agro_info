@@ -1,4 +1,4 @@
-const user_model = require('../model');
+const user_model = require('./model');
 
 // Create and Save new user
 exports.addOneUser = (req, res) => {
@@ -17,7 +17,7 @@ exports.addOneUser = (req, res) => {
     }
 };
 
-// // Retrieve all users from the database
+// Retrieve all users from the database
 exports.getAllUsers = (req, res) => {
     try {
         user_model.find().then(result => {
@@ -25,21 +25,6 @@ exports.getAllUsers = (req, res) => {
                 res.status(200).send(result);
             } else {
                 res.status(204).send('❎ No user to show');
-            }
-        });
-    } catch (err) {
-        res.status(500).send(err);
-    }
-};
-
-// Find particular user with a stir
-exports.getOneUser = (req, res) => {
-    try {
-        user_model.find({ stir: req.params.id }).then(result => {
-            if (result.length != 0) {
-                res.status(200).send(result);
-            } else {
-                res.status(204).send('❎ Could not find the user');
             }
         });
     } catch (err) {
@@ -70,23 +55,6 @@ exports.deleteOneUser = (req, res) => {
                 res.status(200).send(result);
             } else {
                 res.status(404).send('❎ No user found to delete');
-            }
-        });
-    } catch (err) {
-        res.status(500).send(err);
-    }
-};
-
-
-
-// Find particular user with a stir
-exports.validateUser = (req, res) => {
-    try {
-        user_model.find({ stir: req.params.id }).then(result => {
-            if (result.length != 0) {
-                res.status(200).send(result);
-            } else {
-                res.status(204).send('❎ Could not find the user');
             }
         });
     } catch (err) {

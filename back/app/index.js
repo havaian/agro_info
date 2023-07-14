@@ -9,12 +9,13 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 
-app.use(require("./routes"));
-
-require("./db_config");
+app.use(require("./token/routes"));
+app.use(require("./user/routes"));
 
 // set port, listen for requests
 const PORT = process.env.PORT || 1234;
 app.listen(PORT, () => {
   console.log(`Port: ${PORT} ✅`);
 });
+
+require("./db");
