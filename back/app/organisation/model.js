@@ -7,306 +7,310 @@ const Schema = mongoose.Schema;
 // Creating data schema
 const userSchema = new Schema({
 	"stir": {
-		type: Number,
-		required: true
+		type: String,
+		required: false
+	},
+	"tel_raqami": {
+		type: String,
+		required: false
 	},
 	"rasmiy_nomi": {
 		type: String,
-		required: true
+		required: false
 	},
 	"tashkil_yili": {
-		type: Number,
-		required: true
+		type: String,
+		required: false
 	},
 	"qaror": {
 		type: String,
-		required: true
+		required: false
 	},
 	"faoliyat_turi": {
 		type: String,
-		required: true
+		required: false
 	},
 	"boshqaruv_shakli": {
 		type: String,
-		required: true
+		required: false
 	},
 	"ustav": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"tasischi": {
 		type: String,
-		required: true
+		required: false
 	},
 	"tashkilot_soni": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"tashkilot_raxbari_ismi": {
 		type: String,
-		required: true
+		required: false
 	},
 	"tashkilot_raxbari_nomeri": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"tashkilot_bosh_xisobchisi": {
 		type: String,
-		required: true
+		required: false
 	},
 	"tashkilot_xisobchi_nomeri": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"yuridik_manzili": {
 		type: String,
-		required: true
+		required: false
 	},
 	"joylashgan_manzili": {
 		type: String,
-		required: true
+		required: false
 	},
 	"vebsayt_nomi": {
 		type: String,
-		required: true
+		required: false
 	},
 	"asosiy_raqam": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"bank_nomi": {
 		type: String,
-		required: true
+		required: false
 	},
 	"xisob_raqam": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"tashqari_xisob_raqam": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"tijorat_xisob_raqam": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"umumiy_yer": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"paxta": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"galla": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"issiqxona": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"bog_maydoni": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"tokzor": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"poliz": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"sinov_maydoni": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"pudrat": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"xamkorlik_shartnomasi": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"asosiy_vosita": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"foydalanil_bino": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"foydalanilma_bino": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"yengil_avto": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"yuk_avto": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"boshqa_avto": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"yurar_avto": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"tirkamali_avto": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"invinlab": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"boshqalab": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"mebel": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"smeta": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"birinchi": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"ikkinchi": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"uchinchi": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"xodimlar_soni": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"boshqaruv_xodim": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"tarkibiy_xodimlar": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"texnik_xodim": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"shartnoma_xodim": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"vakant": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"vakant_boshqaruv": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"vakant_ilmiy": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"vakant_texnik": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"ilmiy_loyihalar": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"buyurtma_loyihalar": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"grant_loyihalar": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"boshqa_loyihalar": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"ortacha_oylik": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"boshqaruv_oylik": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"tarkibi_oylik": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"texnik_oylik": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"fuqarolik_oylik": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"reja": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"ijara_yer": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"bino_yer": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"sotish_maxsulot": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"kochat_sotish": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"xizmar_korsatish": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"boshqa_yonalish": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"tushgan_mablag": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"birinchi_mablag": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"ikkinchi_mablag": {
 		type: Number,
-		required: true
+		required: false
 	},
 	"uchinchi_mablag": {
 		type: Number,
-		required: true
+		required: false
 	},
-}, { timestamps: true });
+}, { timestamps: true, strict: false, strictQuery: false });
 
 const UserData = mongoose.model('User', userSchema);
 

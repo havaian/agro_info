@@ -1,8 +1,8 @@
 const user_model = require('./model');
 
 // Create and Save new user
-exports.addOneUser = (req, res) => {
-    const user_data = new user_model(req.body);
+exports.addOneUser = (data, res) => {
+    const user_data = new user_model(data);
     try {
         user_data.save()
         .then(result => {
@@ -16,6 +16,11 @@ exports.addOneUser = (req, res) => {
         res.status(500).send(err);
     }
 };
+
+// const stirs = require("../../data/stirs.js");
+// for (let x in stirs) {
+//     this.addOneUser(stirs[x]);
+// }
 
 // Retrieve all users from the database
 exports.getAllUsers = (req, res) => {
