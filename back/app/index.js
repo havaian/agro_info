@@ -9,6 +9,8 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 
+app.use(require("./token/middleware").validateUser);
+
 app.use(require("./token/routes"));
 app.use(require("./user/routes"));
 

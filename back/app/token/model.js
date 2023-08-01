@@ -14,10 +14,6 @@ const tokenSchema = new Schema({
 		type: String,
 		required: true
 	},
-	"login": {
-		type: Number,
-		required: true
-	},
 	"password": {
 		type: Number,
 		required: true

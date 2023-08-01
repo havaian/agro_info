@@ -1,13 +1,23 @@
-const user_model = require('./model');
+const model = require('./model');
 
-// Find particular user with a stir
-exports.validateToken = (req, res) => {
+// Create user
+exports.create = (req, res) => {
+    const data = new model(req.body);
     try {
-        user_model.find({ stir: req.params.id }).then(result => {
+        model.find({ stir: req.body.stir })
+        .then(result => {
             if (result.length != 0) {
-                res.status(200).send(result);
+                res.status(400).send('❎ User already exists');
             } else {
-                res.status(204).send('❎ Could not find the user');
+                data.save()
+                .then(response => {
+                    console.log(response);
+                    if (response.length != 0) {
+                        res.status(201).send(response);
+                    } else {
+                        res.status(400).send('❎ Could not create the user');
+                    }
+                });
             }
         });
     } catch (err) {
@@ -15,17 +25,36 @@ exports.validateToken = (req, res) => {
     }
 };
 
-exports.getToken = (req, res) => {
+// Login user
+exports.login = (req, res) => {
     try {
-        
+        console.log(req.params.id);
+        model.find({ stir: req.params.id }).then(result => {
+            if (result.length != 0) {
+                if (req.body.password === result.password) {
+                    res.status(200).send(result);
+                }
+            } else {
+                res.status(204).send('❎ Could not perform login for the user');
+            }
+        });
     } catch (err) {
-        
+        res.status(500).send(err);
     }
-}
+};
 
-exports.saveToken = (req, res) => {
+// Save token for user
+exports.delete = (req, res) => {
     try {
-        
+        model.findOneAndDelete({ stir: req.params.id }).then(result => {
+            if (result.length != 0) {
+                if (req.body.password === result.password) {
+                    res.status(200).send(result);
+                }
+            } else {
+                res.status(204).send('❎ Could not perform login for the user');
+            }
+        });
     } catch (err) {
         
     }

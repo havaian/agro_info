@@ -17,16 +17,16 @@ router.get("/", (req, res) => {
   });
 });
  
-router.get("/token/get/:id", (req, res) => {
-  controllers.getToken(req, res);
+router.get("/user/login/:id", (req, res) => {
+  controllers.login(req, res);
 });
  
-router.post("/token/save/:id", (req, res) => {
-  controllers.saveToken(req, res);
+router.post("/user/create", (req, res) => {
+  controllers.create(req, res);
 });
  
-router.get("/token/validate/:id", (req, res) => {
-  controllers.validateToken(req, res);
+router.post("/user/delete", (req, res) => {
+  controllers.save(req, res);
 });
 
 module.exports = router;
