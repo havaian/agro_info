@@ -13,32 +13,32 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get("/", (req, res) => {
   res.json({ 
-    agro_info: `It's working! 🙌`
+    organisation: `It's working! 🙌`
   });
 });
 
-router.get("/user/get/all", (req, res) => {
-  controllers.getAllUsers(req, res);
-});
- 
-router.get("/user/get/:id", (req, res) => {
-  controllers.getOneUser(req, res);
-});
-
-router.post('/user/new', (req, res) => {
+router.post('/new', (req, res) => {
   controllers.addOneUser(req, res);
 });
 
-router.put("/user/update/:id", (req, res) => {
+router.get("/get/all", (req, res) => {
+  controllers.getAllUsers(req, res);
+});
+ 
+router.get("/get/:id", (req, res) => {
+  controllers.getOneUser(req, res);
+});
+
+router.put("/update/:id", (req, res) => {
   controllers.updateOneUser(req, res);
 });
 
-router.delete("/user/delete/:id", (req, res) => {
-  controllers.deleteOneUser(req, res);
-});
-
-// router.post("/form/delete/all", (req, res) => {
+// router.post("/delete/all", (req, res) => {
 //   controllers.deleteAllUsers(req, res);
 // });
+
+router.delete("/delete/:id", (req, res) => {
+  controllers.deleteOneUser(req, res);
+});
 
 module.exports = router;

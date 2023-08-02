@@ -13,7 +13,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get("/", (req, res) => {
   res.json({ 
-    agro_info: `It's working! 🙌`
+    token: `It's working! 🙌`
   });
 });
  

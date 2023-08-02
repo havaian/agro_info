@@ -1,15 +1,15 @@
 const model = require('./model');
 
 // Create user
-exports.addOneUser = (req, res) => {
-    const data = new model(req.body);
+exports.addOneUser = (data, res) => {
+    const new_data = new model(data);
     try {
-        model.find({ stir: req.body.stir })
+        model.find({ stir: data.stir })
         .then(response => {
             if (response.length != 0) {
                 res.status(400).send('❎ User already exists');
             } else {
-                data.save()
+                new_data.save()
                 .then(result => {
                     if (result.length != 0) {
                         res.status(201).send(result);
@@ -17,6 +17,21 @@ exports.addOneUser = (req, res) => {
                         res.status(400).send('❎ Could not add the user');
                     }
                 });
+            }
+        });
+    } catch (err) {
+        res.status(500).send(err);
+    }
+};
+
+// Retrieve one user from the database
+exports.getOneUser = (req, res) => {
+    try {
+        model.find({ stir: req.params.id }).then(result => {
+            if (result.length != 0) {
+                res.status(200).send(result);
+            } else {
+                res.status(204).send('❎ No user to show');
             }
         });
     } catch (err) {
@@ -75,13 +90,14 @@ exports.deleteOneUser = (req, res) => {
 //         model.deleteMany().then(result => {
 //             if (result.length != 0) {
 //                 if (result.acknowledged === true) {
-//                     res.status(200).send(result);
+//                     console.log(result);
+//                     // res.status(200).send(result);
 //                 }
 //             } else {
-//                 res.status(400).send('❎ Could not delete the user');
+//                 // res.status(400).send('❎ Could not delete the user');
 //             }
 //         });
 //     } catch (err) {
-//         res.status(500).send(err);
+//         // res.status(500).send(err);
 //     }
 // };
