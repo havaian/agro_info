@@ -1,32 +1,9 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-
+const express = require('express');
 const router = express.Router();
+const authController = require('./controller');
 
-const controllers = require('./controller');
-
-// parse requests of content-type - application/json
-router.use(bodyParser.json());
-
-// parse requests of content-type - application/x-www-form-urlencoded
-router.use(bodyParser.urlencoded({ extended: true }));
-
-router.get("/", (req, res) => {
-  res.json({ 
-    token: `It's working! 🙌`
-  });
-});
- 
-router.get("/user/login/:id", (req, res) => {
-  controllers.login(req, res);
-});
- 
-router.post("/user/create", (req, res) => {
-  controllers.create(req, res);
-});
- 
-router.post("/user/delete", (req, res) => {
-  controllers.save(req, res);
-});
+router.post('/register', authController.register);
+router.post('/login', authController.login);
+router.post('/logout', authController.logout);
 
 module.exports = router;

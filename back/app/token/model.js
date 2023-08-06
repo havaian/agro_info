@@ -1,30 +1,11 @@
-// Importing mongoose
 const mongoose = require('mongoose');
 
-// Calling mongoose schema
-const Schema = mongoose.Schema;
+const tokenSchema = new mongoose.Schema({
+  stir: { type: String, unique: true },
+  role: String,
+  password: String,
+});
 
-// Creating data schema
-const tokenSchema = new Schema({
-	"stir": {
-		type: Number,
-		required: true
-	},
-	"role": {
-		type: String,
-		required: true
-	},
-	"password": {
-		type: Number,
-		required: true
-	},
-	"login_data": {
-		type: Array,
-		required: false
-	}
-}, { timestamps: true });
+const token = mongoose.model('token', tokenSchema);
 
-const TokenSchema = mongoose.model('Token', tokenSchema);
-
-// export default TokenSchema;
-module.exports = TokenSchema;
+module.exports = token;

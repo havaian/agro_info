@@ -1,37 +1,28 @@
-const crypto = require("crypto");
+const User = require('./model');
 
-// Validate user
-exports.validateUser = (req, res, next) => {
-    try {
-        if (req.headers["authorization"].includes("Bearer")) {
-            const token = req.headers["authorization"].split("Bearer ")[1];
-
-            console.log(token);
-            next();
-            // // Data received, perform processing
-            // const signature = `sha256=${crypto
-            //     .createHmac('sha256', secret)
-            //     .update(JSON.stringify(req.body))
-            //     .digest('hex')}`;
-
-            // const isAllowed = req.headers['x-hub-signature-256'] === signature;
-            // const body = req.body;
-            
-            // const isBranch = body?.ref === `refs/heads/${pj_conf["deploy_branch"]}`;
-
-            // if (isAllowed && isBranch) {
-            //     next();
-            // } else {
-            //     if (!isAllowed || !isBranch) {
-            //         !isBranch ? 
-            //             console.log("❌ Branch not prod") && res.status(417).send("❌ Branch not prod") : 
-            //             console.log("❌ Secret verification failed") && res.status(401).send("❌ Secret verification failed");
-            //     } 
-            // }
+exports.requireAuth = async (req, res, next) => {
+  const user_data = req.cookies.user_data; // Assuming you're using cookies for authentication
+  const url = req.url.split("/"); 
+  
+  if (user_data.role != "admin") {
+    if (url[url.length - 1] === user_data.stir 
+        && !url.includes("all") 
+        && !url.includes("delete")) {
+      if (user_data) {
+        const user = await User.findById(user_data["id"]);
+        if (user) {
+          req.user = user;
+          next();
         } else {
-            next();
+          res.status(401).json({ message: 'Unauthorized' });
         }
-    } catch (err) {
-        
+      } else {
+        res.status(401).json({ message: 'Unauthorized' });
+      }
+    } else {
+      res.status(401).json({ message: 'Unauthorized' });
     }
-}
+  } else {
+    next();
+  }
+};

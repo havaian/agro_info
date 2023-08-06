@@ -1,17 +1,45 @@
 const express = require("express");
-const cors = require("cors");
+const app = express();
+
+const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser');
+
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: 'My API',
+      description: 'My API documentation',
+      version: '1.0.0',
+    },
+  },
+  apis: ['./swagger/index.js'], // Path to the Swagger configuration file
+};
+
+const swaggerSpec = swaggerJSDoc(swaggerOptions);
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 require("dotenv").config();
 
 require("./db");
 
-const app = express();
+const cors = require("cors");
+
 var corsOptions = {
   origin: '*'
 };
 app.use(cors(corsOptions));
 
-// app.use(require("./token/middleware").validateUser);
+// parse requests of content-type - application/json
+app.use(bodyParser.json());
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
   res.send({
@@ -19,8 +47,8 @@ app.get("/", (req, res) => {
   })
 });
 
-app.use("/token", require("./token/routes"));
-app.use("/organisation", require("./organisation/routes"));
+app.use("/auth", require("./token/routes"));
+app.use("/organisation", require("./token/middleware").requireAuth, require("./organisation/routes"));
 
 // set port, listen for requests
 const PORT = process.env.PORT || 1234;

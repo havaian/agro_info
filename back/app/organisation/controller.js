@@ -7,14 +7,19 @@ exports.addOneUser = (data, res) => {
         model.find({ stir: data.stir })
         .then(response => {
             if (response.length != 0) {
-                res.status(400).send('❎ User already exists');
+                res.status(400).send('❎ Data already exists');
             } else {
+                require("../token/controller").register({ 
+                    stir: req.body.stir, 
+                    password: req.body.password, 
+                    role: req.body.role 
+                });
                 new_data.save()
                 .then(result => {
                     if (result.length != 0) {
                         res.status(201).send(result);
                     } else {
-                        res.status(400).send('❎ Could not add the user');
+                        res.status(400).send('❎ Could not add the data');
                     }
                 });
             }
@@ -31,7 +36,7 @@ exports.getOneUser = (req, res) => {
             if (result.length != 0) {
                 res.status(200).send(result);
             } else {
-                res.status(204).send('❎ No user to show');
+                res.status(204).send('❎ No data to show');
             }
         });
     } catch (err) {
@@ -46,7 +51,7 @@ exports.getAllUsers = (req, res) => {
             if (result.length != 0) {
                 res.status(200).send(result);
             } else {
-                res.status(204).send('❎ No users to show');
+                res.status(204).send('❎ No data to show');
             }
         });
     } catch (err) {
@@ -61,13 +66,29 @@ exports.updateOneUser = (req, res) => {
             if (result.length != 0) {
                 res.status(200).send(result);
             } else {
-                res.status(404).send('❎ No user found to update');
+                res.status(404).send('❎ No data found to update');
             }
         });
     } catch (err) {
         res.status(500).send(err);
     }
 };
+
+// // Update all users
+// exports.updateAllUsers = (req, res) => {
+//     try {
+//         model.updateMany({}, { $unset: { role: 1 } }, { new: true }).then(result => {
+//             if (result.length != 0) {
+//                 console.log(result);
+//                 // res.status(200).send(result);
+//             } else {
+//                 // res.status(404).send('❎ No data found to update');
+//             }
+//         });
+//     } catch (err) {
+//         res.status(500).send(err);
+//     }
+// };
 
 // Delete user with the specified stir in the request
 exports.deleteOneUser = (req, res) => {
@@ -76,7 +97,7 @@ exports.deleteOneUser = (req, res) => {
             if (result.length != 0) {
                 res.status(200).send(result);
             } else {
-                res.status(404).send('❎ No user found to delete');
+                res.status(404).send('❎ No data found to delete');
             }
         });
     } catch (err) {
@@ -94,7 +115,7 @@ exports.deleteOneUser = (req, res) => {
 //                     // res.status(200).send(result);
 //                 }
 //             } else {
-//                 // res.status(400).send('❎ Could not delete the user');
+//                 // res.status(400).send('❎ Could not delete the data');
 //             }
 //         });
 //     } catch (err) {
