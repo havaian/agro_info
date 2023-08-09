@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+const morgan = require("morgan");
+
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
 
@@ -27,11 +29,17 @@ require("dotenv").config();
 require("./db");
 
 const cors = require("cors");
-
 var corsOptions = {
   origin: '*'
 };
 app.use(cors(corsOptions));
+
+// set up route logger tools
+app.use(morgan("dev"));
+app.use((req, res, next) => {
+  console.log(`${Date(Date.now())}`);
+  next();
+});
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());

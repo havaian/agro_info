@@ -1,27 +1,31 @@
 const model = require('./model');
 
 // Create user
-exports.addOneUser = (data, res) => {
-    const new_data = new model(data);
+exports.addOneUser = async (req, res) => {
+    const new_data = new model(req.body);
     try {
-        model.find({ stir: data.stir })
+        model.find({ stir: req.body.stir })
         .then(response => {
             if (response.length != 0) {
                 res.status(400).send('❎ Data already exists');
             } else {
-                require("../token/controller").register({ 
+                const token = require("../token/controller").register({ 
                     stir: req.body.stir, 
                     password: req.body.password, 
                     role: req.body.role 
                 });
-                new_data.save()
-                .then(result => {
-                    if (result.length != 0) {
-                        res.status(201).send(result);
-                    } else {
-                        res.status(400).send('❎ Could not add the data');
+                setTimeout(() => {
+                    if (token === True) {
+                        new_data.save()
+                        .then(result => {
+                            if (result.length != 0) {
+                                res.status(201).send(result);
+                            } else {
+                                res.status(400).send('❎ Could not add the data');
+                            }
+                        });
                     }
-                });
+                }, 500);
             }
         });
     } catch (err) {

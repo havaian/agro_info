@@ -1,28 +1,44 @@
-const User = require('./model');
+const User = require("./model");
+const jwt = require("jsonwebtoken");
 
 exports.requireAuth = async (req, res, next) => {
-  const user_data = req.cookies.user_data; // Assuming you're using cookies for authentication
-  const url = req.url.split("/"); 
-  
-  if (user_data.role != "admin") {
-    if (url[url.length - 1] === user_data.stir 
-        && !url.includes("all") 
-        && !url.includes("delete")) {
-      if (user_data) {
-        const user = await User.findById(user_data["id"]);
-        if (user) {
+  const authHeader = req.headers.authorization;
+  const userStir = req.cookies.user_stir;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    console.log("Unauthorized: Bearer token not found");
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  const token = authHeader.replace("Bearer ", "");
+
+  try {
+    const user = await User.findOne({ stir: userStir });
+    const decodedToken = jwt.verify(token, user.secret);
+
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    if (decodedToken.id === user._id.toString()) {
+      if (user.role === 'admin') {
+        req.user = user;
+        next();
+      } else if (user.role === 'user') {
+        const urlParts = req.url.split('/');
+        const stirFromUrl = urlParts[urlParts.length - 1];
+        if (stirFromUrl === user.stir && !req.url.includes("all")) {
           req.user = user;
           next();
         } else {
-          res.status(401).json({ message: 'Unauthorized' });
+          res.status(401).json({ message: "Unauthorized" });
         }
       } else {
-        res.status(401).json({ message: 'Unauthorized' });
+        res.status(401).json({ message: "Unauthorized" });
       }
-    } else {
-      res.status(401).json({ message: 'Unauthorized' });
     }
-  } else {
-    next();
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({ message: "Unauthorized" });   
   }
 };

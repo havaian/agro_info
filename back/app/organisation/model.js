@@ -8,7 +8,8 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
 	"stir": {
 		type: String,
-		required: true
+		required: true,
+		unique: true
 	},
 	"tel_raqami": {
 		type: String,

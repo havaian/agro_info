@@ -1,9 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const authController = require('./controller');
+const controller = require('./controller');
 
-router.post('/register', authController.register);
-router.post('/login', authController.login);
-router.post('/logout', authController.logout);
+router.get('/', (req, res) => {
+    res.json({ 
+        auth: `It's working! 🙌`
+    });
+});
+
+router.post('/register', controller.register);
+router.post('/login', controller.login);
+router.post('/logout', controller.logout);
+router.delete('/delete', controller.deleteOneUser);
 
 module.exports = router;

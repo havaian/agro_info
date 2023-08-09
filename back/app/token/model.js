@@ -1,9 +1,23 @@
 const mongoose = require('mongoose');
 
 const tokenSchema = new mongoose.Schema({
-  stir: { type: String, unique: true },
-  role: String,
-  password: String,
+  stir: { 
+    type: String,
+    required: true, 
+    unique: true 
+  },
+  role: {
+    type: String,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  secret: {
+    type: String,
+    required: true
+  }
 });
 
 const token = mongoose.model('token', tokenSchema);

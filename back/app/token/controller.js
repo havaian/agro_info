@@ -1,22 +1,39 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('./model');
 
-// exports.register = async (req, res) => {
+function generateRandomString() {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=<>?';
+  const length = 128;
+  let randomString = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    randomString += characters.charAt(randomIndex);
+  }
+
+  return randomString;
+}
+
 exports.register = async (data) => {
-  // const { stir, password } = req.body;
   const { stir, password, role } = data;
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  const newUser = new User({
-    stir: stir,
-    password: hashedPassword, 
-    role: role
-  });
-
-  await newUser.save();
-
-  res.status(201).json({ message: 'User registered successfully' });
+  try {
+    const hashed_pass = await bcrypt.hash(password, 10);
+  
+    const newUser = new User({
+      stir: stir,
+      password: hashed_pass, 
+      role: role,
+      secret: generateRandomString()
+    });
+  
+    await newUser.save();
+  
+    return true;
+  } catch (err) {
+    return err;
+  }
 };
 
 exports.login = async (req, res) => {
@@ -27,24 +44,26 @@ exports.login = async (req, res) => {
   if (!user || !(await bcrypt.compare(password, user.password))) {
     return res.status(401).json({ message: 'Invalid credentials' });
   }
-
-  const expirationTime = new Date(Date.now() + 24 * 60 * 60 * 1000);
   
   const user_data = {
-    id: user._id,
-    stir: stir,
-    role: user.role,
-    expires: expirationTime
+    id: user._id
   }
 
-  // Set a cookie or session to indicate the user is logged in
-  res.cookie('user_data', user_data, { httpOnly: true, expires: expirationTime });
-  res.status(200).json({ message: 'Logged in successfully', user_data: user_data });
+  const token = jwt.sign(user_data, user.secret, {
+    expiresIn: '24h'
+  });
+
+  res.cookie('user_stir', user.stir, {
+    httpOnly: true,
+    expires: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
+  });
+
+  res.status(200).send({ token: token });
 };
 
 exports.logout = (req, res) => {
   // Clear the cookie or session to log the user out
-  res.clearCookie('user_data');
+  res.clearCookie('stir');
   res.status(200).json({ message: 'Logged out successfully' });
 };
 
@@ -66,7 +85,7 @@ exports.getAllUsers = (req, res) => {
 // Update particular user by the stir in the request
 exports.updateOneUser = (req, res) => {
   try {
-      model.findOneAndUpdate({ stir: req.body.stir }, req.body, { new: true }).then(result => {
+      User.findOneAndUpdate({ stir: req.body.stir }, req.body, { new: true }).then(result => {
           if (result.length != 0) {
               res.status(200).send(result);
           } else {
@@ -78,27 +97,10 @@ exports.updateOneUser = (req, res) => {
   }
 };
 
-// Update all users in the database
-exports.updateAllUsers = (req, res) => {
-  try {
-    User.updateMany({ $set: { role: "user" } }).then(result => {
-      if (result.length != 0) {
-        if (result.acknowledged === true) {
-          res.status(200).send(result);
-        }
-      } else {
-        res.status(400).send('❎ Could not update users');
-      }
-    });
-  } catch (err) {
-    // res.status(500).send(err);
-  }
-};
-
 // Delete particular user by the stir in the request
 exports.deleteOneUser = (req, res) => {
   try {
-      model.findOneAndDelete({ stir: req.body.stir }).then(result => {
+      User.findOneAndDelete({ stir: req.body.stir }).then(result => {
           if (result.length != 0) {
               res.status(200).send(result);
           } else {
@@ -116,13 +118,14 @@ exports.deleteAllUsers = (req, res) => {
     User.deleteMany().then(result => {
       if (result.length != 0) {
         if (result.acknowledged === true) {
-          res.status(200).send(result);
+          console.log(result);
+          // res.status(200).send(result);
         }
       } else {
         res.status(400).send('❎ Could not delete users');
       }
     });
   } catch (err) {
-    // res.status(500).send(err);
+    res.status(500).send(err);
   }
 };
