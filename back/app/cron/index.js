@@ -4,12 +4,10 @@ function generateRandomString() {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=<>?';
   const length = 128;
   let randomString = '';
-
   for (let i = 0; i < length; i++) {
     const randomIndex = Math.floor(Math.random() * characters.length);
     randomString += characters.charAt(randomIndex);
   }
-
   return randomString;
 }
 
@@ -23,12 +21,10 @@ const cronSchedule = '0 0 * * *'; // Every Monday at 00:00 (UTC+5)
 cron.schedule(cronSchedule, async () => {
   try {
     const users = await User.find();
-
     for (const user of users) {
       const newSecret = generateRandomString(); // Use your generateRandomString function here
       await User.findByIdAndUpdate(user._id, { $set: { secret: newSecret } });
     }
-
     console.log('Secret fields updated successfully');
   } catch (error) {
     console.error('Error updating secret fields:', error);

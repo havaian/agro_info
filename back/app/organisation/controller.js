@@ -1,128 +1,225 @@
 const model = require('./model');
 
 // Create user
-exports.addOneUser = async (req, res) => {
-    const new_data = new model(req.body);
+exports.add = async (req, res) => {
+    const register = require("../token/controller").register;
+    // Omit "role" and "password" fields from req.body using destructuring and spread operator
+    const { role, password, ...sanitizedBody } = req.body;
+
+    const new_data = new model(sanitizedBody);
+    if (!new_data.completed) {
+        new_data.completed = false;
+    }
     try {
         model.find({ stir: req.body.stir })
-        .then(response => {
+        .then(async response => {
             if (response.length != 0) {
-                res.status(400).send('❎ Data already exists');
+                console.log(`❌ Data already exists: [${response[0]._id}]`,);
+                res.status(400).send('❌ Data already exists');
             } else {
-                const token = require("../token/controller").register({ 
+                const token = await register({ 
                     stir: req.body.stir, 
                     password: req.body.password, 
                     role: req.body.role 
                 });
-                setTimeout(() => {
-                    if (token === True) {
-                        new_data.save()
-                        .then(result => {
+                if (token === true) {
+                    new_data.save()
+                    .then(result => {
+                        if (result) {
                             if (result.length != 0) {
-                                res.status(201).send(result);
+                                console.log("✅ User created successfully", token);
+                                res.status(200).send("✅ User created successfully");
                             } else {
-                                res.status(400).send('❎ Could not add the data');
+                                console.log('❌ Could not add the data', result);
+                                res.status(400).send('❌ Could not add the data');
                             }
-                        });
-                    }
-                }, 500);
+                        }
+                    })
+                    .catch(err => {
+                        console.log('❌ Server error', err);
+                        res.status(500).send('❌ Server error');
+                    });
+                } else {
+                    console.log('❌ Could not add the data', token);
+                    res.status(400).send('❌ Could not add the data');
+                }
             }
         });
     } catch (err) {
+        console.log(err);
         res.status(500).send(err);
     }
 };
 
 // Retrieve one user from the database
-exports.getOneUser = (req, res) => {
+exports.get = (req, res) => {
     try {
-        model.find({ stir: req.params.id }).then(result => {
-            if (result.length != 0) {
-                res.status(200).send(result);
-            } else {
-                res.status(204).send('❎ No data to show');
+        model.find({ stir: req.params.id })
+        .select('-_id -__v') // Exclude _id and __v fields
+        .then(result => {
+            if (result) {
+                if (result.length != 0) {
+                    res.status(200).send(result[0]);
+                } else {
+                    console.log('❌ No data to show', result);
+                    res.status(204).send('❌ No data to show');
+                }
             }
+        })
+        .catch(err => {
+            console.log('❌ Server error', err);
+            res.status(500).send('❌ Server error');
         });
     } catch (err) {
+        console.log(err);
         res.status(500).send(err);
     }
 };
 
 // Retrieve all users from the database
-exports.getAllUsers = (req, res) => {
+exports.getAll = (req, res) => {
     try {
-        model.find().then(result => {
-            if (result.length != 0) {
-                res.status(200).send(result);
-            } else {
-                res.status(204).send('❎ No data to show');
+        model.find()
+        .select('-_id -__v') // Exclude _id and __v fields
+        .then(result => {
+            if (result) {
+                if (result.length != 0) {
+                    res.status(200).send(result);
+                } else {
+                    console.log('❌ No data to show', result);
+                    res.status(204).send('❌ No data to show');
+                }
             }
+        })
+        .catch(err => {
+            console.log('❌ Server error', err);
+            res.status(500).send('❌ Server error');
         });
     } catch (err) {
+        console.log(err);
         res.status(500).send(err);
     }
 };
 
 // Update particular user by the stir in the request
-exports.updateOneUser = (req, res) => {
+exports.update = async (req, res) => {
+    const fieldsToCheck = require("./model_fields"); // List all fields that need to be checked
+
+    // Check if all required fields are filled
+    const allFieldsFilled = fieldsToCheck.every(field => req.body[field]);
+    
+    // Omit "role", "password", and "completed" fields from req.body using destructuring and spread operator
+    const { role, password, completed, ...sanitizedBody } = req.body;
+
     try {
-        model.findOneAndUpdate({ stir: req.params.id }, req.body, { new: true }).then(result => {
-            if (result.length != 0) {
-                res.status(200).send(result);
-            } else {
-                res.status(404).send('❎ No data found to update');
+        model.findOne({ stir: req.params.id })
+        .then(response => {
+            if (response) {
+                if (allFieldsFilled) {
+                    user.completed = allFieldsFilled;
+                }
+                if (sanitizedBody.stir != req.params.id) {
+                    user.stir = req.params.id;
+                }
+                model.findByIdAndUpdate(response._id, sanitizedBody)
+                .select('-_id -__v')
+                .then(result => {
+                    if (result.length != 0) {
+                        res.status(200).send("✅ User updated successfully");
+                    } else {
+                        console.log('❌ No data to update', result);
+                        res.status(404).send('❌ No data to update');
+                    }
+                }); 
             }
+        })
+        .catch(err => {
+            console.log('❌ Server error', err);
+            res.status(500).send('❌ Server error');
         });
     } catch (err) {
+        console.log(err);
         res.status(500).send(err);
     }
 };
 
-// // Update all users
-// exports.updateAllUsers = (req, res) => {
-//     try {
-//         model.updateMany({}, { $unset: { role: 1 } }, { new: true }).then(result => {
-//             if (result.length != 0) {
-//                 console.log(result);
-//                 // res.status(200).send(result);
-//             } else {
-//                 // res.status(404).send('❎ No data found to update');
-//             }
-//         });
-//     } catch (err) {
-//         res.status(500).send(err);
-//     }
-// };
+// Update all users
+exports.updateAll = (req, res) => {
+    try {
+        model.updateMany({}, { $set: { completed: false } }, { new: true })
+        .select('-_id -__v')
+        .then(result => {
+            if (result) {
+                console.log(result);
+                if (result.length != 0) {
+                    console.log(result);
+                    // res.status(200).send(result);
+                } else {
+                    console.log('❌ No data to update', result);
+                    // res.status(404).send('❌ No data to update');
+                }
+            }
+        })
+        .catch(err => {
+            console.log('❌ Server error', err);
+            // res.status(500).send('❌ Server error');
+        });
+    } catch (err) {
+        console.log(err);
+        // res.status(500).send(err);
+    }
+};
+// this.updateAll();
 
 // Delete user with the specified stir in the request
-exports.deleteOneUser = (req, res) => {
+exports.delete = (req, res) => {
     try {
-        model.findOneAndDelete({ stir: req.params.id }).then(result => {
-            if (result.length != 0) {
-                res.status(200).send(result);
-            } else {
-                res.status(404).send('❎ No data found to delete');
+        model.findOneAndDelete({ stir: req.params.id })
+        .then(result => {
+            if (result) {
+                if (result.length != 0) {
+                    require("../token/controller").delete(req.params.id);
+                    res.status(200).send("✅ User deleted successfully");
+                } else {
+                    console.log('❌ No data to delete', result);
+                    res.status(404).send('❌ No data to delete');
+                }
             }
+        })
+        .catch(err => {
+            console.log('❌ Server error', err);
+            res.status(500).send('❌ Server error');
         });
     } catch (err) {
+        console.log(err);
         res.status(500).send(err);
     }
 };
 
-// // Delete all user from the database
-// exports.deleteAllUsers = (req, res) => {
-//     try {
-//         model.deleteMany().then(result => {
-//             if (result.length != 0) {
-//                 if (result.acknowledged === true) {
-//                     console.log(result);
-//                     // res.status(200).send(result);
-//                 }
-//             } else {
-//                 // res.status(400).send('❎ Could not delete the data');
-//             }
-//         });
-//     } catch (err) {
-//         // res.status(500).send(err);
-//     }
-// };
+// Delete all user from the database
+exports.deleteAll = (req, res) => {
+    try {
+        model.deleteMany()
+        .then(result => {
+            console.log(result);
+            if (result) {
+                if (result.length != 0) {
+                    if (result.acknowledged === true) {
+                        console.log(result);
+                        // res.status(200).send(result);
+                    }
+                } else {
+                    console.log('❌ Could not delete the data', result);
+                    // res.status(400).send('❌ Could not delete the data');
+                }
+            }
+        })
+        .catch(err => {
+            console.log('❌ Server', err);
+            // res.status(500).send('❌ Server');
+        });
+    } catch (err) {
+        console.log(err);
+        // res.status(500).send(err);
+    }
+};

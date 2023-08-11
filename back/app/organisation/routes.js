@@ -18,27 +18,27 @@ router.get("/", (req, res) => {
 });
 
 router.post('/new', (req, res) => {
-  controllers.addOneUser(req, res);
+  controllers.add(req, res);
 });
 
 router.get("/get/all", (req, res) => {
-  controllers.getAllUsers(req, res);
+  controllers.getAll(req, res);
 });
  
 router.get("/get/:id", (req, res) => {
-  controllers.getOneUser(req, res);
+  controllers.get(req, res);
 });
 
 router.put("/update/:id", (req, res) => {
-  controllers.updateOneUser(req, res);
+  controllers.update(req, res);
 });
 
 // router.post("/delete/all", (req, res) => {
-//   controllers.deleteAllUsers(req, res);
+//   controllers.deleteAll(req, res);
 // });
 
 router.delete("/delete/:id", (req, res) => {
-  controllers.deleteOneUser(req, res);
+  controllers.delete(req, res);
 });
 
 module.exports = router;

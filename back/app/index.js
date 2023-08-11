@@ -30,7 +30,7 @@ require("./db");
 
 const cors = require("cors");
 var corsOptions = {
-  origin: '*'
+  origin: '*' 
 };
 app.use(cors(corsOptions));
 
@@ -63,3 +63,5 @@ const PORT = process.env.PORT || 1234;
 app.listen(PORT, () => {
   console.log(`Port: ${PORT} ✅`);
 });
+
+require("./cron");

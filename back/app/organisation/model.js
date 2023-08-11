@@ -11,6 +11,10 @@ const userSchema = new Schema({
 		required: true,
 		unique: true
 	},
+	"completed": {
+		type: Boolean,
+		required: true,
+	},
 	"tel_raqami": {
 		type: String,
 		required: false
@@ -52,7 +56,7 @@ const userSchema = new Schema({
 		required: false
 	},
 	"tashkilot_raxbari_nomeri": {
-		type: Number,
+		type: String,
 		required: false
 	},
 	"tashkilot_bosh_xisobchisi": {

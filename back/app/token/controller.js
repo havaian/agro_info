@@ -2,21 +2,21 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('./model');
 
-function generateRandomString() {
+function generateSecret() {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+=<>?';
   const length = 128;
-  let randomString = '';
+  let secret = '';
 
   for (let i = 0; i < length; i++) {
     const randomIndex = Math.floor(Math.random() * characters.length);
-    randomString += characters.charAt(randomIndex);
+    secret += characters.charAt(randomIndex);
   }
 
-  return randomString;
+  return secret;
 }
 
 exports.register = async (data) => {
-  const { stir, password, role } = data;
+  const { stir, password, role } = data;   
 
   try {
     const hashed_pass = await bcrypt.hash(password, 10);
@@ -25,14 +25,15 @@ exports.register = async (data) => {
       stir: stir,
       password: hashed_pass, 
       role: role,
-      secret: generateRandomString()
+      secret: generateSecret()
     });
   
     await newUser.save();
   
     return true;
   } catch (err) {
-    return err;
+    console.log(err);
+    return false;
   }
 };
 
@@ -42,7 +43,8 @@ exports.login = async (req, res) => {
   const user = await User.findOne({ stir });
 
   if (!user || !(await bcrypt.compare(password, user.password))) {
-    return res.status(401).json({ message: 'Invalid credentials' });
+    console.log('❌ Invalid credentials');
+    return res.status(401).json({ message: '❌ Invalid credentials' });
   }
   
   const user_data = {
@@ -64,17 +66,24 @@ exports.login = async (req, res) => {
 exports.logout = (req, res) => {
   // Clear the cookie or session to log the user out
   res.clearCookie('stir');
-  res.status(200).json({ message: 'Logged out successfully' });
+  console.log('✅ Logged out successfully');
+  res.status(200).json({ message: '✅ Logged out successfully' });
 };
 
 // Retrieve all users from the database
-exports.getAllUsers = (req, res) => {
+exports.getAll = (req, res) => {
   try {
-    User.find().then(result => {
-      if (result.length != 0) {
-        res.status(200).send(result);
-      } else {
-        res.status(204).send('❎ Nothing to show');
+    User.find()
+    .select('-_id -__v')
+    .then(result => {
+      if (result) {
+        if (result.length != 0) {
+          console.log(result);
+          // res.status(200).send(result);
+        } else {
+          // console.log('❌ Nothing to show');
+          // res.status(204).send('❌ Nothing to show');
+        }
       }
     });
   } catch (err) {
@@ -83,14 +92,19 @@ exports.getAllUsers = (req, res) => {
 };
 
 // Update particular user by the stir in the request
-exports.updateOneUser = (req, res) => {
+exports.update = (req, res) => {
   try {
-      User.findOneAndUpdate({ stir: req.body.stir }, req.body, { new: true }).then(result => {
+      User.findOneAndUpdate({ stir: req.body.stir }, req.body, { new: true })
+      .select('-_id -__v')
+      .then(result => {
+        if (result) {
           if (result.length != 0) {
               res.status(200).send(result);
           } else {
-              res.status(404).send('❎ No user found to update');
+              console.log('❌ No user found to update');
+              res.status(404).send('❌ No user found to update');
           }
+        }
       });
   } catch (err) {
       res.status(500).send(err);
@@ -98,34 +112,44 @@ exports.updateOneUser = (req, res) => {
 };
 
 // Delete particular user by the stir in the request
-exports.deleteOneUser = (req, res) => {
+exports.delete = (stir) => {
   try {
-      User.findOneAndDelete({ stir: req.body.stir }).then(result => {
+      User.findOneAndDelete({ stir: stir })
+      .then(result => {
+        if (result) {
           if (result.length != 0) {
-              res.status(200).send(result);
+            console.log(`✅ Deleted successfully [${result._id}]`);
           } else {
-              res.status(404).send('❎ No user found to delete');
+            console.log('❌ No user found to delete');
           }
+        }
       });
+      return true;
   } catch (err) {
-      res.status(500).send(err);
+    console.log(err);
+    return false;
   }
 };
 
 // Delete all users from the database
-exports.deleteAllUsers = (req, res) => {
+exports.deleteAll = (req, res) => {
   try {
-    User.deleteMany().then(result => {
-      if (result.length != 0) {
-        if (result.acknowledged === true) {
-          console.log(result);
-          // res.status(200).send(result);
+    User.deleteMany()
+    .then(result => {
+      if (result) {
+        if (result.length != 0) {
+          if (result.acknowledged === true) {
+            console.log(result);
+            // res.status(200).send(result);
+          }
+        } else {
+          console.log('❌ Could not delete users');
+          res.status(400).send('❌ Could not delete users');
         }
-      } else {
-        res.status(400).send('❎ Could not delete users');
       }
     });
   } catch (err) {
+    console.log(err);
     res.status(500).send(err);
   }
 };

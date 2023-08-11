@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 exports.requireAuth = async (req, res, next) => {
   const authHeader = req.headers.authorization;
-  const userStir = req.cookies.user_stir;
+  const userStir = req.headers.stir; 
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     console.log("Unauthorized: Bearer token not found");
@@ -17,6 +17,7 @@ exports.requireAuth = async (req, res, next) => {
     const decodedToken = jwt.verify(token, user.secret);
 
     if (!user) {
+      console.log("❌ No user found");
       return res.status(401).json({ message: "Unauthorized" });
     }
 
@@ -27,13 +28,20 @@ exports.requireAuth = async (req, res, next) => {
       } else if (user.role === 'user') {
         const urlParts = req.url.split('/');
         const stirFromUrl = urlParts[urlParts.length - 1];
-        if (stirFromUrl === user.stir && !req.url.includes("all")) {
+        if (
+          (stirFromUrl === user.stir 
+          && !req.url.includes("all") 
+          && !req.url.includes("delete")) 
+          || req.url.includes("new")
+        ) {
           req.user = user;
           next();
         } else {
+          console.log("❌ Action not allowed for user role");
           res.status(401).json({ message: "Unauthorized" });
         }
       } else {
+        console.log("❌ Role not found in database");
         res.status(401).json({ message: "Unauthorized" });
       }
     }
