@@ -28,9 +28,9 @@ exports.register = async (data) => {
       secret: generateSecret()
     });
   
-    await newUser.save();
-  
-    return true;
+    await newUser.save()
+    
+    return stir;
   } catch (err) {
     console.log(err);
     return false;
@@ -63,11 +63,24 @@ exports.login = async (req, res) => {
   res.status(200).send({ token: token });
 };
 
-exports.logout = (req, res) => {
-  // Clear the cookie or session to log the user out
-  res.clearCookie('stir');
-  console.log('✅ Logged out successfully');
-  res.status(200).json({ message: '✅ Logged out successfully' });
+// Retrieve all users from the database
+exports.get = (req, res) => {
+  try {
+    User.findOne({ stir: req.params.id })
+    .select('-_id -__v -password -secret')
+    .then(result => {
+      if (result) {
+        if (result.length != 0) {
+          res.status(200).send(result);
+        } else {
+          console.log('❌ Nothing to show');
+          res.status(204).send('❌ Nothing to show');
+        }
+      }
+    });
+  } catch (err) {
+    res.status(500).send(err);
+  }
 };
 
 // Retrieve all users from the database
@@ -81,7 +94,7 @@ exports.getAll = (req, res) => {
           console.log(result);
           // res.status(200).send(result);
         } else {
-          // console.log('❌ Nothing to show');
+          console.log('❌ Nothing to show');
           // res.status(204).send('❌ Nothing to show');
         }
       }
@@ -94,20 +107,22 @@ exports.getAll = (req, res) => {
 // Update particular user by the stir in the request
 exports.update = (req, res) => {
   try {
-      User.findOneAndUpdate({ stir: req.body.stir }, req.body, { new: true })
-      .select('-_id -__v')
-      .then(result => {
-        if (result) {
-          if (result.length != 0) {
-              res.status(200).send(result);
-          } else {
-              console.log('❌ No user found to update');
-              res.status(404).send('❌ No user found to update');
-          }
+    User.findOneAndUpdate({ stir: req.body.stir }, req.body, { new: true })
+    .select('-_id -__v')
+    .then(result => {
+      if (result) {
+        if (result.length != 0) {
+          console.log("✅ Updated successfully!", result);
+          res.status(200).send("✅ Updated successfully!");
+        } else {
+          console.log('❌ No user found to update');
+          res.status(404).send('❌ No user found to update');
         }
-      });
+      }
+    });
   } catch (err) {
-      res.status(500).send(err);
+    console.log(err);
+    res.status(500).send(err);
   }
 };
 

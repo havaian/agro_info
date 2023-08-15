@@ -22,7 +22,7 @@ exports.add = async (req, res) => {
                     password: req.body.password, 
                     role: req.body.role 
                 });
-                if (token === true) {
+                if (token === req.body.stir) {
                     new_data.save()
                     .then(result => {
                         if (result) {
@@ -40,7 +40,7 @@ exports.add = async (req, res) => {
                         res.status(500).send('❌ Server error');
                     });
                 } else {
-                    console.log('❌ Could not add the data', token);
+                    console.log('❌ Could not add the data');
                     res.status(400).send('❌ Could not add the data');
                 }
             }
@@ -76,10 +76,119 @@ exports.get = (req, res) => {
     }
 };
 
+
+
+// Retrieve users with certain stirs sent in req body from the database
+exports.getStirs = (req, res) => {
+    try {
+        model.find({ stir: { $in: req.body.stirs } })
+        .select('-_id -__v') // Exclude _id and __v fields
+        .then(result => {
+            if (result) {
+                if (result.length != 0) {
+                    res.status(200).send(result);
+                } else {
+                    console.log('❌ No data to show', result);
+                    res.status(204).send('❌ No data to show');
+                }
+            }
+        })
+        .catch(err => {
+            console.log('❌ Server error', err);
+            res.status(500).send('❌ Server error');
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+};
+
+// Retrieve all users from the database
+exports.getSearched = (req, res) => {
+    const fieldsToSearch = [ "stir", "rasmiy_nomi", "tashkilot_raxbari_nomeri" ]; // Specify the fields to search
+
+    try {
+        const searchValue = req.query.search;
+
+        let query = {};
+
+        if (searchValue) {
+            query.$or = fieldsToSearch.map(field => ({
+                [field]: { $regex: searchValue, $options: 'i' }
+            }));
+        } else {
+            res.status(400).send('Bad Request');
+            return;
+        }
+
+        model.find(query)
+        .select('-_id -__v') // Exclude _id and __v fields
+        .then(result => {
+            if (result && result.length !== 0) {
+                res.status(200).send(result);
+            } else {
+                console.log('❌ No data to show', result);
+                res.status(204).send('❌ No data to show');
+            }
+            })
+        .catch(err => {
+            console.log('❌ Server error', err);
+            res.status(500).send('❌ Server error');
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+};
+
 // Retrieve all users from the database
 exports.getAll = (req, res) => {
     try {
-        model.find()
+        if (!req.query.completed) {
+            model.find()
+            .select('-_id -__v') // Exclude _id and __v fields
+            .then(result => {
+                if (result) {
+                    if (result.length != 0) {
+                        res.status(200).send(result);
+                    } else {
+                        console.log('❌ No data to show', result);
+                        res.status(204).send('❌ No data to show');
+                    }
+                }
+            })
+            .catch(err => {
+                console.log('❌ Server error', err);
+                res.status(500).send('❌ Server error');
+            });
+        } else {
+            model.find({ completed: req.query.completed })
+            .select('-_id -__v') // Exclude _id and __v fields
+            .then(result => {
+                if (result) {
+                    if (result.length != 0) {
+                        res.status(200).send(result);
+                    } else {
+                        console.log('❌ No data to show', result);
+                        res.status(204).send('❌ No data to show');
+                    }
+                }
+            })
+            .catch(err => {
+                console.log('❌ Server error', err);
+                res.status(500).send('❌ Server error');
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err);
+    }
+};
+
+// Retrieve completed users from the database
+exports.getCompleted = (req, res) => {
+    try {
+        model.find({ completed: req.params.id })
         .select('-_id -__v') // Exclude _id and __v fields
         .then(result => {
             if (result) {

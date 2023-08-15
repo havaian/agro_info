@@ -8,9 +8,8 @@ router.get('/', (req, res) => {
     });
 });
 
-router.post('/register', controller.register);
 router.post('/login', controller.login);
-router.post('/logout', controller.logout);
-router.delete('/delete', controller.delete);
+router.post('/register', controller.register);
+router.get('/user/:id', require("./middleware").requireAuth, controller.get);
 
 module.exports = router;

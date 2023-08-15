@@ -25,6 +25,14 @@ router.get("/get/all", (req, res) => {
   controllers.getAll(req, res);
 });
  
+router.get("/get", (req, res) => {
+  controllers.getSearched(req, res);
+});
+ 
+router.post("/get", (req, res) => {
+  controllers.getStirs(req, res);
+});
+ 
 router.get("/get/:id", (req, res) => {
   controllers.get(req, res);
 });
