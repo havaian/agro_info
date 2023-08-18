@@ -225,10 +225,7 @@ exports.update = async (req, res) => {
         .then(response => {
             if (response) {
                 if (allFieldsFilled) {
-                    user.completed = allFieldsFilled;
-                }
-                if (sanitizedBody.stir != req.params.id) {
-                    user.stir = req.params.id;
+                    sanitizedBody.completed = allFieldsFilled;
                 }
                 model.findByIdAndUpdate(response._id, sanitizedBody)
                 .select('-_id -__v')
