@@ -1,0 +1,21 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 16px 24px;
+  margin-top: 24px;
+}
+.navbar h4 {
+  margin: 0;
+}
+.btnn {
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  color: #333;
+}
+.btnn:hover {
+  color: #000;
+}
