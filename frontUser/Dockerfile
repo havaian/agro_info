@@ -5,13 +5,13 @@ FROM node:16
 WORKDIR /app
 
 # Copy package.json and yarn.lock to the container
-COPY package.json yarn.lock ./app
+COPY package.json yarn.lock ./
 
 # Install dependencies
 RUN yarn install
 
 # Copy everything to app directory
-COPY . /app
+COPY . ./
 
 # Copy the entrypoint script to the container
 COPY entrypoint.sh ./app

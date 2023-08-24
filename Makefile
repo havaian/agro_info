@@ -12,7 +12,7 @@ imgs:
 	docker images
 
 dc_imgs:
-        docker-compose images
+	docker-compose images
 
 build:
 	docker-compose -f $(COMPOSE_FILE) build
@@ -37,8 +37,8 @@ help:
 	@echo "Available targets:"
 	@echo "  ps        -  Show status of Docker Compose services"
 	@echo "  logs      -  Show logs of Docker Compose services"
-        @echo "  imgs      -  Show all Docker images"
-        @echo "  dc_imgs   -  Show all Docker Compose images"
+	@echo "  imgs      -  Show all Docker images"
+	@echo "  dc_imgs   -  Show all Docker Compose images"
 	@echo "  build     -  Build Docker images"
 	@echo "  up        -  Start Docker Compose services"
 	@echo "  run       -  Build images and start services"
