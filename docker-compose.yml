@@ -1,0 +1,65 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    env_file:
+      - .env
+    ports:
+      - ${DB_PORT}
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongodb-init:/docker-entrypoint-initdb.d  # Mount the initialization script
+    networks:
+      - agro_info_netw
+
+  agro_info_back:
+    build:
+      context: ./back
+    container_name: agro_info_back
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+    ports:
+      - ${BACK_PORT}
+    networks:
+      - agro_info_netw
+
+  agro_info_user:
+    build:
+      context: ./frontUser
+    container_name: agro_info_user
+    env_file:
+      - .env
+    environment:
+      - REACT_APP_NOT_SECRET_CODE=http://agro_info_back:${BACK_PORT}
+    depends_on:
+      - agro_info_back
+    #ports:
+    #  - ${USER_FRONT_PORT}
+    networks:
+      - agro_info_netw
+
+  agro_info_admin:
+    build:
+      context: ./frontAdmin
+    container_name: agro_info_admin
+    env_file:
+      - .env
+    environment:
+      - REACT_APP_NOT_SECRET_CODE=http://agro_info_back:${BACK_PORT}
+    depends_on:
+      - agro_info_back
+    #ports:
+    #  - ${ADMIN_FRONT_PORT}
+    networks:
+      - agro_info_netw
+
+networks:
+  agro_info_netw:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+
