@@ -26,26 +26,26 @@ down:
 	docker-compose -f $(COMPOSE_FILE) down
 
 kill:
-	docker-compose -f $(COMPOSE_FILE) down -v
+	docker-compose -f $(COMPOSE_FILE) kill
 
 rm:
-	docker-compose -f $(COMPOSE_FILE) rm -v -f
+	docker-compose -f $(COMPOSE_FILE) rm
 
-deploy: kill rm run
+deploy: down kill rm run
 
 help:
 	@echo "Available targets:"
+	@echo "  deploy    -  Kill, remove, rebuild, and run services"
 	@echo "  ps        -  Show status of Docker Compose services"
 	@echo "  logs      -  Show logs of Docker Compose services"
-	@echo "  imgs      -  Show all Docker images"
 	@echo "  dc_imgs   -  Show all Docker Compose images"
+	@echo "  imgs      -  Show all Docker images"
 	@echo "  build     -  Build Docker images"
 	@echo "  up        -  Start Docker Compose services"
 	@echo "  run       -  Build images and start services"
 	@echo "  down      -  Stop and remove services"
 	@echo "  kill      -  Stop and remove services with volumes"
 	@echo "  rm        -  Remove stopped services and volumes"
-	@echo "  deploy    -  Kill, remove, rebuild, and run services"
 	@echo "  help      -  Show this help message"
 
 .PHONY: ps logs imgs dc_imgs build up run down kill rm deploy help

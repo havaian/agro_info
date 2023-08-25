@@ -4,7 +4,7 @@
 rm -rf /home/odya/projects/frontUser/build/*
 
 # Run the build script
-yarn build
+npm run build
 
 # Copy build files to the server location
 cp -r build/* /home/odya/projects/frontUser/build/

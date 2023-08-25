@@ -26,35 +26,35 @@ services:
     networks:
       - agro_info_netw
 
-  agro_info_user:
-    build:
-      context: ./frontUser
-    container_name: agro_info_user
-    env_file:
-      - .env
-    environment:
-      - REACT_APP_NOT_SECRET_CODE=http://agro_info_back:${BACK_PORT}
-    depends_on:
-      - agro_info_back
-    #ports:
-    #  - ${USER_FRONT_PORT}
-    networks:
-      - agro_info_netw
+  #agro_info_user:
+  #  build:
+  #    context: ./frontUser
+  #   container_name: agro_info_user
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     - REACT_APP_NOT_SECRET_CODE=http://agro_info_back:${BACK_PORT}
+  #   depends_on:
+  #     - agro_info_back
+  #   #ports:
+  #   #  - ${USER_FRONT_PORT}
+  #   networks:
+  #     - agro_info_netw
 
-  agro_info_admin:
-    build:
-      context: ./frontAdmin
-    container_name: agro_info_admin
-    env_file:
-      - .env
-    environment:
-      - REACT_APP_NOT_SECRET_CODE=http://agro_info_back:${BACK_PORT}
-    depends_on:
-      - agro_info_back
-    #ports:
-    #  - ${ADMIN_FRONT_PORT}
-    networks:
-      - agro_info_netw
+  # agro_info_admin:
+  #   build:
+  #     context: ./frontAdmin
+  #   container_name: agro_info_admin
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     - REACT_APP_NOT_SECRET_CODE=http://agro_info_back:${BACK_PORT}
+  #   depends_on:
+  #     - agro_info_back
+  #   #ports:
+  #   #  - ${ADMIN_FRONT_PORT}
+  #   networks:
+  #     - agro_info_netw
 
 networks:
   agro_info_netw:
