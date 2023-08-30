@@ -1,0 +1,25 @@
+version: '3'
+services:
+  agro_info_user:
+    build:
+      context: ./frontUser
+      dockerfile: Dockerfile.build
+    container_name: agro_info_user
+    environment:
+      - REACT_APP_NOT_SECRET_CODE=http://92.63.206.48:${BACK_PORT}
+    networks:
+      - main_network
+
+  agro_info_admin:
+    build:
+      context: ./frontAdmin
+      dockerfile: Dockerfile.build
+    container_name: agro_info_admin
+    environment:
+      - REACT_APP_NOT_SECRET_CODE=http://92.63.206.48:${BACK_PORT}
+    networks:
+      - main_network
+
+networks:
+  main_network:
+    external: true

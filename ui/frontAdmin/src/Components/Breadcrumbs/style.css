@@ -1,0 +1,21 @@
+.actionWrapper {
+  display: flex;
+  align-items: center;
+  padding: 16px 4px;
+  justify-content: space-between;
+}
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+}
+.breadcrumbs a {
+  color: #777;
+  text-decoration: none;
+  letter-spacing: 1.5px;
+}
+.breadcrumbs a.active {
+  color: #999;
+}
+.breadcrumbs a:hover {
+  color: #000;
+}

@@ -1,9 +1,6 @@
 # Local folder data
 data
 
-# PM2 files
-ecosystem.config.js
-
 # Logs
 logs
 *.log
