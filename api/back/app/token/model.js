@@ -18,7 +18,7 @@ const tokenSchema = new mongoose.Schema({
     type: String,
     required: true
   }
-});
+}, { timestamps: true, strict: false, strictQuery: false });
 
 const token = mongoose.model('token', tokenSchema);
 

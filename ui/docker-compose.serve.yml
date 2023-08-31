@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile.serve
     container_name: agro_info_user
     environment:
-      - REACT_APP_NOT_SECRET_CODE=http://92.63.206.48:${BACK_PORT}
+      - REACT_APP_NOT_SECRET_CODE=http://127.0.0.1:${BACK_PORT}
     ports:
       - ${USER_FRONT_EXPOSE}:${USER_FRONT_PORT}
     networks:
@@ -18,7 +18,7 @@ services:
       dockerfile: Dockerfile.serve
     container_name: agro_info_admin
     environment:
-      - REACT_APP_NOT_SECRET_CODE=http://92.63.206.48:${BACK_PORT}
+      - REACT_APP_NOT_SECRET_CODE=http://127.0.0.1:${BACK_PORT}
     ports:
       - ${ADMIN_FRONT_EXPOSE}:${ADMIN_FRONT_PORT}
     networks:

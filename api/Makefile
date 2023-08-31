@@ -15,7 +15,7 @@ dc_imgs:
 	docker-compose images
 
 build:
-	docker-compose -f $(COMPOSE_FILE) build
+	docker-compose -f $(COMPOSE_FILE) build --remove-orphans
 
 up:
 	docker-compose -f $(COMPOSE_FILE) up -d
@@ -23,7 +23,7 @@ up:
 run: build up
 
 down:
-	docker-compose -f $(COMPOSE_FILE) down
+	docker-compose -f $(COMPOSE_FILE) down --remove-orphans
 
 kill:
 	docker-compose -f $(COMPOSE_FILE) kill
@@ -31,21 +31,24 @@ kill:
 rm:
 	docker-compose -f $(COMPOSE_FILE) rm
 
-deploy: down kill rm run
+clean: down kill rm
+
+deploy: clean run
 
 help:
 	@echo "Available targets:"
-	@echo "  deploy    -  Kill, remove, rebuild, and run services"
-	@echo "  ps        -  Show status of Docker Compose services"
-	@echo "  logs      -  Show logs of Docker Compose services"
-	@echo "  dc_imgs   -  Show all Docker Compose images"
-	@echo "  imgs      -  Show all Docker images"
-	@echo "  build     -  Build Docker images"
-	@echo "  up        -  Start Docker Compose services"
-	@echo "  run       -  Build images and start services"
-	@echo "  down      -  Stop and remove services"
-	@echo "  kill      -  Stop and remove services with volumes"
-	@echo "  rm        -  Remove stopped services and volumes"
-	@echo "  help      -  Show this help message"
+	@echo "  deploy    -  Kill, remove, rebuild, and run agro_info_api"
+	@echo "  ps        -  Show status of Docker Compose agro_info_api"
+	@echo "  logs      -  Show logs of Docker Compose agro_info_api"
+	@echo "  dc_imgs   -  Show all Docker Compose images agro_info_api"
+	@echo "  imgs      -  Show all Docker images agro_info_api"
+	@echo "  build     -  Build Docker images agro_info_api"
+	@echo "  up        -  Start Docker Compose agro_info_api"
+	@echo "  run       -  Build images and start agro_info_api"
+	@echo "  down      -  Stop and remove agro_info_api"
+	@echo "  kill      -  Stop and remove agro_info_api"
+	@echo "  rm        -  Remove stopped agro_info_api"
+	@echo "  clean     -  Down && kill && rm agro_info_api"
+	@echo "  help      -  Show agro_info_api help message"
 
 .PHONY: ps logs imgs dc_imgs build up run down kill rm deploy help

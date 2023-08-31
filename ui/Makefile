@@ -22,7 +22,7 @@ up_b:
 run_b: build_b up_b
 
 down_b:
-	docker-compose -f $(BUILD_COMPOSE_FILE) down
+	docker-compose -f $(BUILD_COMPOSE_FILE) down --remove-orphans
 
 kill_b:
 	docker-compose -f $(BUILD_COMPOSE_FILE) kill
@@ -30,7 +30,9 @@ kill_b:
 rm_b:
 	docker-compose -f $(BUILD_COMPOSE_FILE) rm
 
-deploy_b: down_b kill_b rm_b run_b
+clean_b: down_b kill_b rm_b
+
+deploy_b: clean_b run_b
 
 
 # Targets
@@ -52,7 +54,7 @@ up_s:
 run_s: build_s up_s
 
 down_s:
-	docker-compose -f $(SERVE_COMPOSE_FILE) down
+	docker-compose -f $(SERVE_COMPOSE_FILE) down --remove-orphans
 
 kill_s:
 	docker-compose -f $(SERVE_COMPOSE_FILE) kill
@@ -60,30 +62,36 @@ kill_s:
 rm_s:
 	docker-compose -f $(SERVE_COMPOSE_FILE) rm
 
-deploy_s: down_s kill_s rm_s run_s
+clean_s: down_s kill_s rm_s
+
+deploy_s: clean_s run_s
 
 
 
 help:
 	@echo "Available targets:"
-	@echo "  deploy_b    -  Kill, remove, rebuild, and run build services"
-	@echo "  deploy_s    -  Kill, remove, rebuild, and run serve services"
-	@echo "  ps        -  Show status of Docker Compose services"
-	@echo "  logs      -  Show logs of Docker Compose services"
-	@echo "  dc_imgs   -  Show all Docker Compose images"
-	@echo "  imgs      -  Show all Docker images"
-	@echo "  build_b     -  Build Docker build images"
-	@echo "  up_b        -  Start Docker Compose build services"
-	@echo "  run_b       -  Build images and start build services"
-	@echo "  down_b      -  Stop and remove build services"
-	@echo "  kill_b      -  Stop and remove build services with volumes"
-	@echo "  rm_b        -  Remove stopped build services and volumes"
-	@echo "  build_s     -  Build Docker serve images"
-	@echo "  up_s        -  Start Docker Compose serve services"
-	@echo "  run_s       -  Build images and start serve services"
-	@echo "  down_s      -  Stop and remove serve services"
-	@echo "  kill_s      -  Stop and remove serve services with volumes"
-	@echo "  rm_s        -  Remove stopped serve services and volumes"
-	@echo "  help      -  Show this help message"
+	@echo "  deploy_b    -  Kill, remove, rebuild, and run build"
+	@echo "  deploy_s    -  Kill, remove, rebuild, and run serve"
+	@echo "  ps_b        -  Show status of Docker Compose build"
+	@echo "  logs_b      -  Show logs of Docker Compose build"
+	@echo "  imgs_b      -  Show all Docker images build"
+	@echo "  build_b     -  Build Docker images build"
+	@echo "  up_b        -  Start Docker Compose build"
+	@echo "  run_b       -  Build images and start build"
+	@echo "  down_b      -  Stop and remove build build"
+	@echo "  kill_b      -  Stop and remove build build"
+	@echo "  rm_b        -  Remove stopped build build"
+	@echo "  clean_b     -  Down && kill && rm build"
+	@echo "  ps_s        -  Show status of Docker Compose serve"
+	@echo "  logs_s      -  Show logs of Docker Compose serve"
+	@echo "  imgs_s      -  Show all Docker images serve"
+	@echo "  build_s     -  Build Docker images serve"
+	@echo "  up_s        -  Start Docker Compose serve"
+	@echo "  run_s       -  Build images and start serve"
+	@echo "  down_s      -  Stop and remove serve"
+	@echo "  kill_s      -  Stop and remove serve"
+	@echo "  rm_s        -  Remove stopped serve"
+	@echo "  clean_s     -  Down && kill && rm serve"
+	@echo "  help        -  Show agro_info_ui help message"
 
 .PHONY: ps logs imgs dc_imgs build_b up_b run_b down_b kill_b rm_b deploy_b build_b up_s run_s down_s kill_s rm_s deploy_s help
