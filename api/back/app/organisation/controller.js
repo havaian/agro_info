@@ -174,7 +174,8 @@ exports.getAll = (req, res) => {
                 res.status(500).send('❌ Server error');
             });
         } else {
-            model.find({ completed: req.query.completed })
+            // model.find({ completed: req.query.completed })
+            model.find({})
             .select('-_id -__v') // Exclude _id and __v fields
             .then(result => {
                 if (result) {

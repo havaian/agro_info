@@ -32,7 +32,7 @@ remove: stop
 clean: remove
 	docker rmi $(APP_NAME)
 
-deploy: clean run
+deploy: down up
 
 # Targets
 ps:

@@ -64,7 +64,7 @@ rm_s:
 
 clean_s: down_s kill_s rm_s
 
-deploy_s: clean_s run_s
+deploy_s: down_s up_s
 
 
 
